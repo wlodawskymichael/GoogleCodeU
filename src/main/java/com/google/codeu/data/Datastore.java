@@ -53,12 +53,32 @@ public class Datastore {
    *     message. List is sorted by time descending.
    */
   public List<Message> getMessages(String user) {
+    return messageHelp(user);
+  }
+
+  /**
+   * Get messages posted by every user.
+   * 
+   * @return a list of messages posted by all users of the site, or an empty list if
+   *    there are no messages
+   */
+  public List<Message> getAllMessages() {
+    return messageHelp(null);
+  }
+
+  /**
+   * Helper function to make port redundant code for Message Query.
+   * 
+   * @return a list of messages p
+   */
+  private List<Message> messageHelp(String user) {
     List<Message> messages = new ArrayList<>();
 
-    Query query =
-        new Query("Message")
-            .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
-            .addSort("timestamp", SortDirection.DESCENDING);
+    Query query = (user != null) ? new Query("Message")
+                                    .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+                                    .addSort("timestamp", SortDirection.DESCENDING) :
+                                  new Query("Message")
+                                    .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -77,6 +97,6 @@ public class Datastore {
       }
     }
 
-    return messages;
+    return messages;   
   }
 }
