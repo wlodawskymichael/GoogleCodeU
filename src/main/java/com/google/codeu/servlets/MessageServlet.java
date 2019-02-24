@@ -80,7 +80,7 @@ public class MessageServlet extends HttpServlet {
 
     Message message = new Message(user, text);
     datastore.storeMessage(message);
-
+    System.out.println(message); 
     response.sendRedirect("/user-page.html?user=" + user);
   }
 }
