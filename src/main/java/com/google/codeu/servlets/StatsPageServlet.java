@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.codeu.data.Datastore;
 import com.google.gson.JsonObject;
 
-/**
- * Handles fetching site statistics
- */
+// Handles fetching site statistics
 @WebServlet("/stats")
 public class StatsPageServlet extends HttpServlet {
 
@@ -23,9 +21,7 @@ public class StatsPageServlet extends HttpServlet {
         datastore = new Datastore();
     }
 
-    /**
-     * Responds with site statistics in JSON
-     */
+    // Responds with site statistics in JSON
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException {
@@ -38,5 +34,3 @@ public class StatsPageServlet extends HttpServlet {
         response.getOutputStream().println(jsonObject.toString());
     }
 }
-
-

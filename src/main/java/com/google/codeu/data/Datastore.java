@@ -83,11 +83,11 @@ public class Datastore {
 
   /**
    * Gets total number of messages posted.
-   * @return an integer respresenting the total numner of messages posted on the webpage.
+   * 
+   * @return an integer respresenting the total number of messages posted on the webpage.
    */
   public int getTotalMessageCount() {
-    Query query = new Query("Message");
-    PreparedQuery results = datastore.prepare(query);
+    PreparedQuery results = datastore.prepare(new Query("Message"));
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
   }
 }
