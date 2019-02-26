@@ -28,7 +28,8 @@ public class Message {
   private String recipient;
 
   /**
-   * Constructs a new {@link Message} posted by {@code user} with {@code text} content
+   * Constructs a new {@link Message} posted by {@code user} with
+   * {@code text} content
    * and sent to {@code recipient}. Generates a
    * random ID and uses the current system time for the creation time.
    */
