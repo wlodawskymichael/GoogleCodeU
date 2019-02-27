@@ -12,10 +12,7 @@ import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Message;
 import com.google.gson.Gson;
 
-/**
- * Handles fetching all messages for public feed.
- */
-
+/** Handles fetching all messages for public feed. */
  @WebServlet("/feed")
  public class MessageFeedServlet extends HttpServlet {
 

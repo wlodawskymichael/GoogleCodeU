@@ -31,6 +31,7 @@ import java.util.UUID;
 public class Datastore {
 
   private DatastoreService datastore;
+  private final String defaultMessageUser = null;
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -53,7 +54,7 @@ public class Datastore {
    *     message. List is sorted by time descending.
    */
   public List<Message> getMessages(String user) {
-    return messageHelp(user);
+    return messageQuery(user);
   }
 
   /**
@@ -63,15 +64,15 @@ public class Datastore {
    *    there are no messages
    */
   public List<Message> getAllMessages() {
-    return messageHelp(null);
+    return messageQuery(defaultMessageUser);
   }
 
   /**
-   * Helper function to make port redundant code for Message Query.
+   * Helper function to add versatility to redundant code for Message Queries.
    * 
    * @return a list of messages p
    */
-  private List<Message> messageHelp(String user) {
+  private List<Message> messageQuery(String user) {
     List<Message> messages = new ArrayList<>();
 
     Query query = (user != null) ? new Query("Message")
@@ -97,6 +98,6 @@ public class Datastore {
       }
     }
 
-    return messages;   
+    return messages;
   }
 }
