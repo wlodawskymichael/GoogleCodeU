@@ -32,6 +32,7 @@ import java.util.UUID;
 public class Datastore {
 
   private DatastoreService datastore;
+  private final String defaultMessageUser = null;
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -55,12 +56,32 @@ public class Datastore {
    *     message. List is sorted by time descending.
    */
   public List<Message> getMessages(String user) {
+    return messageQuery(user);
+  }
+
+  /**
+   * Get messages posted by every user.
+   * 
+   * @return a list of messages posted by all users of the site, or an empty list if
+   *    there are no messages
+   */
+  public List<Message> getAllMessages() {
+    return messageQuery(defaultMessageUser);
+  }
+
+  /**
+   * Helper function to add versatility to redundant code for Message Queries.
+   * 
+   * @return a list of messages p
+   */
+  private List<Message> messageQuery(String user) {
     List<Message> messages = new ArrayList<>();
 
-    Query query =
-        new Query("Message")
-            .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
-            .addSort("timestamp", SortDirection.DESCENDING);
+    Query query = (user != null) ? new Query("Message")
+                                    .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+                                    .addSort("timestamp", SortDirection.DESCENDING) :
+                                  new Query("Message")
+                                    .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
