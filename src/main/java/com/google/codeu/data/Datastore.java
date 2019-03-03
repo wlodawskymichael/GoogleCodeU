@@ -55,13 +55,39 @@ public class Datastore {
    * @return a list of messages posted by the user, or empty list if user has never posted a
    *     message. List is sorted by time descending.
    */
-  public List<Message> getMessages(String user) {
-    return messageQuery(user);
-  }
+  public List<Message> getMessages(String recipient) {
+    List<Message> messages = new ArrayList<>();
+
+    Query query =
+        new Query("Message")
+            .setFilter(new Query.FilterPredicate("recipient",
+              FilterOperator.EQUAL, recipient))
+            .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String idString = entity.getKey().getName();
+        UUID id = UUID.fromString(idString);
+        String user = (String) entity.getProperty("user");
+
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Message message = new Message(id, user, text, timestamp, recipient);
+        messages.add(message);
+      } catch (Exception e) {
+        System.err.println("Error reading message.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return messages;
+}
 
   /**
    * Get messages posted by every user.
-   * 
+   *
    * @return a list of messages posted by all users of the site, or an empty list if
    *    there are no messages
    */
@@ -71,7 +97,7 @@ public class Datastore {
 
   /**
    * Helper function to add versatility to redundant code for Message Queries.
-   * 
+   *
    * @return a list of messages p
    */
   private List<Message> messageQuery(String user) {
@@ -106,7 +132,7 @@ public class Datastore {
 
   /**
    * Gets total number of messages posted.
-   * 
+   *
    * @return an integer respresenting the total number of messages posted on the webpage.
    */
   public int getTotalMessageCount() {
