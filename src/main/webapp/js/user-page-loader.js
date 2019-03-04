@@ -44,7 +44,7 @@ function showMessageFormIfViewingSelf() {
           messageForm.classList.remove('hidden');
         
         }
- document.getElementById('about-me-form').classList.remove('hidden');     });
+ document.getElementById('about-me-form').classList.remove('hidden');	     });
 
 }
 
