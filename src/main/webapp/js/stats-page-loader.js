@@ -1,4 +1,4 @@
-// fetch stats and display them in page
+/** Fetch stats and display them in page */
 function fetchStats() {
     const url = '/stats';
     fetch(url).then((response) => {
@@ -18,7 +18,7 @@ function buildStatElement(statString) {
     return statElement;
 }
 
-// Fetch data and populate the UI of the page
+/** Fetch data and populate the UI of the page */
 function buildUI() {
     fetchStats();
 }
