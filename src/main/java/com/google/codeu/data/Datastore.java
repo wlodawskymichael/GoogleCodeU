@@ -139,33 +139,4 @@ public class Datastore {
     PreparedQuery results = datastore.prepare(new Query("Message"));
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
   }
-
-  /**
-   * Stores the user data
-   */
-  public void storeUser(User user) {
-	  Entity userEntity = new Entity("User",user.getEmail());
-
-	  userEntity.setProperty("email",user.getEmail());
-	  userEntity.setProperty("aboutMe",user.getAboutMe());
-	  datastore.put(userEntity);
-  }
-
-  /**
-   * Returns the user owned by the email address
-   */
-  public User getUser(String email) {
-
-	  Query query = new Query("User").setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL,email));
-	  PreparedQuery results = datastore.prepare(query);
-	  Entity userEntity = results.asSingleEntity();
-	  if(userEntity == null) {
-		  return null;
-	  }
-    String aboutMe = (String) userEntity.getProperty("aboutMe");
-    User user = new User(email,aboutMe);
-    return user;
-  }
-
-
 }
