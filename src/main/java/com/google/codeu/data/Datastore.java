@@ -140,19 +140,20 @@ public class Datastore {
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
   }
 
-  //Stores the user data
+  /**
+   * Stores the user data
+   */
   public void storeUser(User user) {
 	  Entity userEntity = new Entity("User",user.getEmail());
 
 	  userEntity.setProperty("email",user.getEmail());
 	  userEntity.setProperty("aboutMe",user.getAboutMe());
 	  datastore.put(userEntity);
-
-
   }
 
-  //Returns the User owned by the email address
-
+  /**
+   * Returns the user owned by the email address
+   */
   public User getUser(String email) {
 
 	  Query query = new Query("User").setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL,email));
@@ -161,10 +162,9 @@ public class Datastore {
 	  if(userEntity == null) {
 		  return null;
 	  }
-
-  String aboutMe = (String) userEntity.getProperty("aboutMe");
-  User user = new User(email,aboutMe);
-  return user;
+    String aboutMe = (String) userEntity.getProperty("aboutMe");
+    User user = new User(email,aboutMe);
+    return user;
   }
 
 
