@@ -33,6 +33,8 @@ public class Datastore {
 
   private DatastoreService datastore;
   private final String defaultMessageUser = null;
+  private static final String USER = "user";
+  private static final String RECIPIENT = "recipient";
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -41,10 +43,10 @@ public class Datastore {
   /** Stores the Message in Datastore. */
   public void storeMessage(Message message) {
     Entity messageEntity = new Entity("Message", message.getId().toString());
-    messageEntity.setProperty("user", message.getUser());
+    messageEntity.setProperty(USER, message.getUser());
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
-    messageEntity.setProperty("recipient", message.getRecipient());
+    messageEntity.setProperty(RECIPIENT, message.getRecipient());
 
     datastore.put(messageEntity);
   }
@@ -55,10 +57,10 @@ public class Datastore {
    * @return a list of messages posted by the user, or empty list if user has never posted a
    *     message. List is sorted by time descending.
    */
-  public List<Message> getMessages(String name, String type) {
+  public List<Message> getMessages(String name, String queryType) {
     List<Message> messages = new ArrayList<>();
     Query query = (name != null) ? new Query("Message")
-                                    .setFilter(new Query.FilterPredicate(type, FilterOperator.EQUAL, name))
+                                    .setFilter(new Query.FilterPredicate(queryType, FilterOperator.EQUAL, name))
                                     .addSort("timestamp", SortDirection.DESCENDING) :
                                   new Query("Message")
                                     .addSort("timestamp", SortDirection.DESCENDING);
@@ -72,13 +74,13 @@ public class Datastore {
         long timestamp = (long) entity.getProperty("timestamp");
         Message message = null;
 
-        if (type == "user") {
-          String recipient = (String) entity.getProperty("recipient");
+        if (USER.equals(queryType)) {
+          String recipient = (String) entity.getProperty(RECIPIENT);
 
           message = new Message(id, name, text, timestamp, recipient);
         }
-        else if (type == "recipient"){
-          String user = (String) entity.getProperty("user");
+        else if (RECIPIENT.equals(queryType)){
+          String user = (String) entity.getProperty(USER);
 
           message = new Message(id, user, text, timestamp, name);
         }
@@ -101,7 +103,7 @@ public class Datastore {
    *    there are no messages
    */
   public List<Message> getAllMessages() {
-    return getMessages(defaultMessageUser, "user");
+    return getMessages(defaultMessageUser, USER);
   }
 
   /**
