@@ -16,7 +16,27 @@
 
 /* Prevent the page from becoming too wide. */
 body {
+  margin: 0;
+}
+
+.content {
   max-width: 600px;
+  margin: 8px;
+}
+
+@keyframes animateBackground {
+  from { background-position: 0 0; }
+  to {background-position: 100% 0; }
+}
+
+.animated-header {
+  width: 100%;
+  height: 200px;
+  background-image: url('../attributes/bg-clouds.png');
+  background-position: 0px 0px ;
+  background-repeat: repeat-x;
+  /*TODO: For any animation, need to find the optimal repeat time*/
+  animation: animateBackground 60s linear infinite;
 }
 
 /* Remove bullet points from navigation bar. */
