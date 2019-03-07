@@ -55,25 +55,34 @@ public class Datastore {
    * @return a list of messages posted by the user, or empty list if user has never posted a
    *     message. List is sorted by time descending.
    */
-  public List<Message> getMessages(String recipient) {
+  public List<Message> getMessages(String name, String type) {
     List<Message> messages = new ArrayList<>();
+    Query query = (name != null) ? new Query("Message")
+                                    .setFilter(new Query.FilterPredicate(type, FilterOperator.EQUAL, name))
+                                    .addSort("timestamp", SortDirection.DESCENDING) :
+                                  new Query("Message")
+                                    .addSort("timestamp", SortDirection.DESCENDING);
 
-    Query query =
-        new Query("Message")
-            .setFilter(new Query.FilterPredicate("recipient",
-              FilterOperator.EQUAL, recipient))
-            .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
-        String user = (String) entity.getProperty("user");
-
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
+        Message message = null;
 
-        Message message = new Message(id, user, text, timestamp, recipient);
+        if (type == "user") {
+          String recipient = (String) entity.getProperty("recipient");
+
+          message = new Message(id, name, text, timestamp, recipient);
+        }
+        else if (type == "recipient"){
+          String user = (String) entity.getProperty("user");
+
+          message = new Message(id, user, text, timestamp, name);
+        }
+
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
@@ -92,42 +101,7 @@ public class Datastore {
    *    there are no messages
    */
   public List<Message> getAllMessages() {
-    return messageQuery(defaultMessageUser);
-  }
-
-  /**
-   * Helper function to add versatility to redundant code for Message Queries.
-   *
-   * @return a list of messages p
-   */
-  private List<Message> messageQuery(String user) {
-    List<Message> messages = new ArrayList<>();
-
-    Query query = (user != null) ? new Query("Message")
-                                    .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
-                                    .addSort("timestamp", SortDirection.DESCENDING) :
-                                  new Query("Message")
-                                    .addSort("timestamp", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
-
-    for (Entity entity : results.asIterable()) {
-      try {
-        String idString = entity.getKey().getName();
-        UUID id = UUID.fromString(idString);
-        String text = (String) entity.getProperty("text");
-        long timestamp = (long) entity.getProperty("timestamp");
-        String recipient = (String) entity.getProperty("recipient");
-
-        Message message = new Message(id, user, text, timestamp, recipient);
-        messages.add(message);
-      } catch (Exception e) {
-        System.err.println("Error reading message.");
-        System.err.println(entity.toString());
-        e.printStackTrace();
-      }
-    }
-
-    return messages;
+    return getMessages(defaultMessageUser, "user");
   }
 
   /**
