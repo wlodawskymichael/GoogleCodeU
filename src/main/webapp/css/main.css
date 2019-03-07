@@ -20,7 +20,6 @@
 * https://visme.co/blog/website-color-schemes/ 
 * Note: Using color scheme #21 "Clean and Energetic"
 */
-
 :root {
   --dark_blue: #5680e9;
   --light_blue: #84ceeb;
@@ -28,21 +27,25 @@
   --light_grey: #c1c8e4;
   --medium_purple: #8860d0;
 }
+
 /* Prevent the page from becoming too wide. */
 body {
   margin: 0;
 }
 
+/* Seperate content of webpage from the edge of the screen */
 .content {
   max-width: 600px;
   margin: 8px;
 }
 
+/* Set position change of animation for header. */
 @keyframes animateBackground {
   from { background-position: 0 0; }
   to {background-position: 100% 0; }
 }
 
+/* Program animation and style for the cloud header. */
 .animated-header {
   width: 100%;
   height: 200px;
