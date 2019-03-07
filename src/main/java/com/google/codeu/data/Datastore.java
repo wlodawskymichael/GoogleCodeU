@@ -33,6 +33,8 @@ public class Datastore {
 
   private DatastoreService datastore;
   private final String defaultMessageUser = null;
+  private static final String USER = "user";
+  private static final String RECIPIENT = "recipient";
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -41,10 +43,10 @@ public class Datastore {
   /** Stores the Message in Datastore. */
   public void storeMessage(Message message) {
     Entity messageEntity = new Entity("Message", message.getId().toString());
-    messageEntity.setProperty("user", message.getUser());
+    messageEntity.setProperty(USER, message.getUser());
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
-    messageEntity.setProperty("recipient", message.getRecipient());
+    messageEntity.setProperty(RECIPIENT, message.getRecipient());
 
     datastore.put(messageEntity);
   }
@@ -55,44 +57,34 @@ public class Datastore {
    * @return a list of messages posted by the user, or empty list if user has never posted a
    *     message. List is sorted by time descending.
    */
-  public List<Message> getMessages(String user) {
-    return messageQuery(user);
-  }
-
-  /**
-   * Get messages posted by every user.
-   * 
-   * @return a list of messages posted by all users of the site, or an empty list if
-   *    there are no messages
-   */
-  public List<Message> getAllMessages() {
-    return messageQuery(defaultMessageUser);
-  }
-
-  /**
-   * Helper function to add versatility to redundant code for Message Queries.
-   * 
-   * @return a list of messages p
-   */
-  private List<Message> messageQuery(String user) {
+  public List<Message> getMessages(String name, String queryType) {
     List<Message> messages = new ArrayList<>();
-
-    Query query = (user != null) ? new Query("Message")
-                                    .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+    Query query = (name != null) ? new Query("Message")
+                                    .setFilter(new Query.FilterPredicate(queryType, FilterOperator.EQUAL, name))
                                     .addSort("timestamp", SortDirection.DESCENDING) :
                                   new Query("Message")
                                     .addSort("timestamp", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
 
+    PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
-        String recipient = (String) entity.getProperty("recipient");
+        Message message = null;
 
-        Message message = new Message(id, user, text, timestamp, recipient);
+        if (USER.equals(queryType)) {
+          String recipient = (String) entity.getProperty(RECIPIENT);
+
+          message = new Message(id, name, text, timestamp, recipient);
+        }
+        else if (RECIPIENT.equals(queryType)){
+          String user = (String) entity.getProperty(USER);
+
+          message = new Message(id, user, text, timestamp, name);
+        }
+
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
@@ -102,11 +94,21 @@ public class Datastore {
     }
 
     return messages;
+}
+
+  /**
+   * Get messages posted by every user.
+   *
+   * @return a list of messages posted by all users of the site, or an empty list if
+   *    there are no messages
+   */
+  public List<Message> getAllMessages() {
+    return getMessages(defaultMessageUser, USER);
   }
 
   /**
    * Gets total number of messages posted.
-   * 
+   *
    * @return an integer respresenting the total number of messages posted on the webpage.
    */
   public int getTotalMessageCount() {
