@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
+
+/*
+* Make some default colors for a color scheme found here:
+* https://visme.co/blog/website-color-schemes/ 
+* Note: Using color scheme #21 "Clean and Energetic"
+*/
+
+:root {
+  --dark_blue: #5680e9;
+  --light_blue: #84ceeb;
+  --medium_blue: #5ab9ea;
+  --light_grey: #c1c8e4;
+  --medium_purple: #8860d0;
+}
 /* Prevent the page from becoming too wide. */
 body {
   margin: 0;
