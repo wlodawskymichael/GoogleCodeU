@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -79,10 +81,29 @@ public class MessageServlet extends HttpServlet {
     String user = userService.getCurrentUser().getEmail();
     String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
     String recipient = request.getParameter("recipient");
-
+    text = convertBBCode(text);
     Message message = new Message(user, text, recipient);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.html?user=" + recipient);
+  }
+
+  /**
+   * Parses message text and changes BBCode tags on styled text to HTML tags
+   */
+  public String convertBBCode(String text){
+      String temp = text;
+
+      Map<String , String> bbMap = new HashMap<String , String>();
+      bbMap.put("\\[b\\](.+?)\\[/b\\]", "<strong>$1</strong>");
+      bbMap.put("\\[i\\](.+?)\\[/i\\]", "<em>$1</em>");
+      bbMap.put("\\[u\\](.+?)\\[/u\\]", "<u>$1</u>");
+      bbMap.put("\\[s\\](.+?)\\[/s\\]", "<del>$1</del>");
+
+      for (Map.Entry entry: bbMap.entrySet()) {
+        temp = temp.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+      }
+      return temp;
+
   }
 }
