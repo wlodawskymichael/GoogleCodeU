@@ -29,6 +29,11 @@
   --gainsboro: #DCDCDC;
 }
 
+/* Set default font. */
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 /* Prevent the page from becoming too wide. */
 body {
   margin: 0;
@@ -45,11 +50,28 @@ body {
   float: none;
 }
 
-/* Clear floats for next line alignment after images */
+/* Clear floats for new-line alignment after images. */
 .img-container::after {
   display: block;
   content: "";
   clear: both;
+}
+
+/* Make default button class for website unification. */
+.button {
+  border: none;
+  background-color: inherit;
+  padding: 14px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+
+/* Set color for button when it has a cursor over it. */
+.button:hover {
+  background: #c4bcbca1;
 }
 
 /* Set alignment and color of the title of the header. */
@@ -61,7 +83,7 @@ h2 {
 /* Set position change of animation for header. */
 @keyframes animateBackground {
   from { background-position: 0 0; }
-  to {background-position: 100% 0; }
+  to { background-position: 100% 0; }
 }
 
 /* Program animation and style for the cloud header. */
