@@ -38,9 +38,18 @@ body {
 
 /* Seperate content of webpage from the edge of the screen. */
 .content {
-  max-width: 600px;
+  display: block;
+  max-width: 100%;
   height: 100%;
   margin: 8px;
+  float: none;
+}
+
+/* Clear floats for next line alignment after images */
+.img-container::after {
+  display: block;
+  content: "";
+  clear: both;
 }
 
 /* Set alignment and color of the title of the header. */
@@ -64,6 +73,13 @@ h2 {
   background-repeat: repeat-x;
   /* TODO: Need to find the optimal repeat time without it looking jumpy. */
   animation: animateBackground 60s linear infinite;
+}
+
+.column img {
+  float: left;
+  height: 300px;
+  width: 300px;
+  padding: 5px;
 }
 
 /* Add background color to the navigation bar */
