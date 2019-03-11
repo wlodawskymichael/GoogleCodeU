@@ -81,8 +81,17 @@ public class MessageServlet extends HttpServlet {
     String user = userService.getCurrentUser().getEmail();
     String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
     String recipient = request.getParameter("recipient");
+    
+    // Styling text
     text = convertBBCode(text);
-    Message message = new Message(user, text, recipient);
+
+    // Recplacing image url to img tag
+    String regex = "(https?://\\S+\\.(png|jpg))";
+    String replacement = "<img src=\"$1\" />";
+    String textWithImageTags = text.replaceAll(regex, replacement);
+    System.out.println(textWithImageTags);
+
+    Message message = new Message(user, textWithImageTags, recipient);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.html?user=" + recipient);
