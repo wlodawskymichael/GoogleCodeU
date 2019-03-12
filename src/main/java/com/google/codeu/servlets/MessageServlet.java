@@ -85,9 +85,10 @@ public class MessageServlet extends HttpServlet {
     // Styling text
     text = convertBBCode(text);
 
-    // Recplacing image url to img tag
-    String regex = "(https?://([^\\s.]+.?[^\\s.]*)+/[^\\s.]+.(png|jpg|gif))";
+    // Replacing image url to img tag
+    String regex = "(https?://\\S+\\.(png|jpg|gif))";
     String replacement = "<img src=\"$1\" />";
+    System.out.println(text);
     String textWithImageTags = text.replaceAll(regex, replacement);
     System.out.println(textWithImageTags);
 
