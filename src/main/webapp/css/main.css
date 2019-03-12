@@ -14,15 +14,105 @@
  * limitations under the License.
  */
 
+
+/*
+* Make some default colors for a color scheme found here:
+* https://visme.co/blog/website-color-schemes/ 
+* Note: Using color scheme #21 "Clean and Energetic"
+*/
+:root {
+  --dark_blue: #5680e9;
+  --light_blue: #84ceeb;
+  --medium_blue: #5ab9ea;
+  --light_grey: #c1c8e4;
+  --medium_purple: #8860d0;
+  --gainsboro: #DCDCDC;
+}
+
+/* Set default font. */
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 /* Prevent the page from becoming too wide. */
 body {
-  max-width: 600px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Seperate content of webpage from the edge of the screen. */
+.content {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  margin: 8px;
+  float: none;
+}
+
+/* Clear floats for new-line alignment after images. */
+.img-container::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+/* Make default button class for website unification. */
+.button {
+  border: none;
+  background-color: inherit;
+  padding: 14px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+
+/* Set color for button when it has a cursor over it. */
+.button:hover {
+  background: #c4bcbca1;
+}
+
+/* Set alignment and color of the title of the header. */
+h2 {
+  color: white;
+  text-align: center;
+}
+
+/* Set position change of animation for header. */
+@keyframes animateBackground {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+/* Program animation and style for the cloud header. */
+.animated-header {
+  width: 100%;
+  height: 180px;
+  background-image: url('../attributes/bg-clouds.png');
+  background-position: 0px 0px ;
+  background-repeat: repeat-x;
+  /* TODO: Need to find the optimal repeat time without it looking jumpy. */
+  animation: animateBackground 60s linear infinite;
+}
+
+.column img {
+  float: left;
+  height: 300px;
+  width: 300px;
+  padding: 5px;
+}
+
+/* Add background color to the navigation bar */
+.navbar {
+  background-color: rgba(220, 220, 220, .39) 
 }
 
 /* Remove bullet points from navigation bar. */
 nav ul {
   list-style-type: none;
-  padding-left: 0;
+  padding-left: 8px;
 }
 
 /* Keep navigation menu on one line. */

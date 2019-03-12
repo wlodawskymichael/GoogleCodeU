@@ -16,23 +16,44 @@ limitations under the License.
 
 <!DOCTYPE html>
 <html>
+  
   <head>
+    <!-- Metadata of the sight -->
     <meta charset="UTF-8">
     <title>CodeU 2019 Starter Project</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/navigation-loader.js"></script>
   </head>
   <body onload="addLoginOrLogoutLinkToNavigation();">
-    <nav>
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-      </ul>
+    <header class="animated-header">
+      <h2 id="title">Animator's Paradise</h2>
+    </header>
+    <nav class="navbar">
+        <ul id="navigation">
+          <li><a class="button" href="/">Home</a></li>
+        </ul>
     </nav>
-    <h1>CodeU Starter Project</h1>
-    <p>This is the CodeU starter project. Click the links above to login and visit your page.
-    You can post messages on your page, and you can visit other user pages if you have
-    their URL.</p>
-    <p>This is your code now! Feel free to make changes, and don't be afraid to get creative!
-    You could start by modifying this page to tell the world more about your team.</p>
+    <div class="content">
+        <a class="button" href="./about-us.html">About Us!</a>
+        <p>Examples of work we promote:</p>
+        <div class="img-container">
+          <div class="column">
+            <img src="attributes/astronaut-animation.gif">
+          </div>
+          <div class="column">
+            <img src="attributes/rhino-animation.gif">
+          </div>
+          <div class="column">
+            <img src="attributes/space-oscar-animation.gif">
+          </div>
+        </div>
+
+        <h1>CodeU Starter Project</h1>
+        <p>This is the CodeU starter project. Click the links above to login and visit your page.
+        You can post messages on your page, and you can visit other user pages if you have
+        their URL.</p>
+        <p>This is your code now! Feel free to make changes, and don't be afraid to get creative!
+        You could start by modifying this page to tell the world more about your team.</p>
+    </div>
   </body>
 </html>

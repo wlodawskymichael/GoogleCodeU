@@ -31,16 +31,32 @@ function addLoginOrLogoutLinkToNavigation() {
       })
       .then((loginStatus) => {
         if (loginStatus.isLoggedIn) {
-          navigationElement.appendChild(createListItem(createLink(
-              '/user-page.html?user=' + loginStatus.username, 'Your Page')));
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+              '/feed.html', 'Feed'))));
+
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+              '/user-page.html?user=' + loginStatus.username, 'Your Page'))));
 
           navigationElement.appendChild(
-              createListItem(createLink('/logout', 'Logout')));
+              createListItem(formatNavBarElement(createLink('/logout', 'Logout'))));
+
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+              '/stats-page.html', 'Statistics'))));
         } else {
           navigationElement.appendChild(
-              createListItem(createLink('/login', 'Login')));
+              createListItem(formatNavBarElement(createLink('/login', 'Login'))));
         }
       });
+}
+
+/**
+ * Default format the anchor elements in the nav bar.
+ * @param {Element} anchorElement
+ * @return {Element} formatted anchor element
+ */
+function formatNavBarElement(anchorElement) {
+  anchorElement.classList.add("button");
+  return anchorElement;
 }
 
 /**
