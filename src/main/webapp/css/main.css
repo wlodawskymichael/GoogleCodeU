@@ -103,20 +103,3 @@ h2 {
   width: 300px;
   padding: 5px;
 }
-
-/* Add background color to the navigation bar */
-.navbar {
-  background-color: rgba(220, 220, 220, .39) 
-}
-
-/* Remove bullet points from navigation bar. */
-nav ul {
-  list-style-type: none;
-  padding-left: 8px;
-}
-
-/* Keep navigation menu on one line. */
-nav li {
-  display: inline-block;
-  margin-right: 10px
-}

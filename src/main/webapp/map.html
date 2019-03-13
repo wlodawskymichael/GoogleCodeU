@@ -3,11 +3,15 @@
     <head>
         <title>Map Project</title>
         <link rel="stylesheet" href="./css/map.css">
+        <link rel="stylesheet" href="./css/navbar.css">
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzmDWU53vZ1-31h4RX_g-L1MAHQvy9v7I"></script>
         <script src="./js/map-loader.js"></script>
         <script src="./js/navigation-loader.js"></script>
     </head>
     <body onload="createNavigationBar(); createMap();">
+        <nav class="navbar">
+            <ul id="navigation"></ul>
+        </nav>
         <h1>Wizard Sightings</h1>
         <p>Have you seen a Wizard?</p>
         <div id="map"></div>
