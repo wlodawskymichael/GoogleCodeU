@@ -74,10 +74,9 @@ body {
   background: #c4bcbca1;
 }
 
-/* Set alignment and color of the title of the header. */
-h2 {
-  color: white;
-  text-align: center;
+@-webkit-keyframes colorChange {
+  0% {background: #5abaea00}
+  100% {background: #61585842;}
 }
 
 /* Set position change of animation for header. */
@@ -87,14 +86,28 @@ h2 {
 }
 
 /* Program animation and style for the cloud header. */
-.animated-header {
+#animated-header, #colorChanger {
+  position: absolute;
   width: 100%;
   height: 180px;
   background-image: url('../attributes/bg-clouds.png');
   background-position: 0px 0px ;
+}
+
+#animated-header {
   background-repeat: repeat-x;
-  /* TODO: Need to find the optimal repeat time without it looking jumpy. */
-  animation: animateBackground 60s linear infinite;
+  animation: animateBackground 42s linear infinite;
+}
+
+/* Set the clouds to become darker the longer the user stays on the main page. */
+#colorChanger {
+  -webkit-animation: colorChange 120s infinite;
+}
+
+/* Set alignment and color of the title of the header. */
+#title {
+  color: white;
+  text-align: center;
 }
 
 .column img {
