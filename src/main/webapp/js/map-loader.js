@@ -14,25 +14,43 @@
  * limitations under the License.
  */
 
-let map;
+/** Create the Google Map and center it around "Hogwarts" aka the Googleplex */
 function createMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
+    //Create the Google Map.
+    const map = new google.maps.Map(document.getElementById("map"), {
         center: {
             lat: 37.422, 
             lng: -122.084
         },
         zoom: 16
     });
-    const hogwartsMarker = new google.maps.Marker({
+    //Create a marker for "Hogwarts" aka the Googleplex.
+    createMapMarker(map, 37.422, -122.084, 
+        'Hogwarts', 'This is Hogwarts, School of Wizardry');
+}
+
+/**
+ * Creates a Marker on the Google Map with a listener that 
+ * posts a description when clicked.
+ * @param {google.maps.Map} map 
+ * @param {float} lat (latitude)
+ * @param {float} lng (longitude)
+ * @param {String} title 
+ * @param {String} description 
+ */
+function createMapMarker (map, lat, lng, title, description) {
+    const marker = new google.maps.Marker({
         position: {
-            lat: 37.422,
-            lng: -122.084
+            lat: lat,
+            lng: lng
         },
         map: map,
-        title: 'Hogwarts'
+        title: title
     });
-    const hogwartsInfoWindow = new google.maps.InfoWindow({
-        content: 'This is Hogwarts, School of Wizardry.'
+    var infoWindow = new google.maps.InfoWindow({
+        content: description
     });
-    hogwartsInfoWindow.open(map, hogwartsMarker);
+    marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+    });
 }
