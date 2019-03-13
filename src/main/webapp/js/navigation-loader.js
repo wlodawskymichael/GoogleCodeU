@@ -16,14 +16,17 @@
 
 /**
  * Adds a login or logout link to the page, depending on whether the user is
- * already logged in.
+ * already logged in. Creates navigation bar in its entirety.
  */
-function addLoginOrLogoutLinkToNavigation() {
+function createNavigationBar() {
   const navigationElement = document.getElementById('navigation');
   if (!navigationElement) {
     console.warn('Navigation element not found!');
     return;
   }
+
+  navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+      '/', 'Home'))));
 
   fetch('/login-status')
       .then((response) => {
@@ -31,17 +34,18 @@ function addLoginOrLogoutLinkToNavigation() {
       })
       .then((loginStatus) => {
         if (loginStatus.isLoggedIn) {
+
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
               '/feed.html', 'Feed'))));
 
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
               '/user-page.html?user=' + loginStatus.username, 'Your Page'))));
 
-          navigationElement.appendChild(
-              createListItem(formatNavBarElement(createLink('/logout', 'Logout'))));
-
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
               '/stats-page.html', 'Statistics'))));
+
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+              '/logout', 'Logout'))));
         } else {
           navigationElement.appendChild(
               createListItem(formatNavBarElement(createLink('/login', 'Login'))));

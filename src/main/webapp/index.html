@@ -24,14 +24,12 @@ limitations under the License.
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/navigation-loader.js"></script>
   </head>
-  <body onload="addLoginOrLogoutLinkToNavigation();">
+  <body onload="createNavigationBar();">
     <header class="animated-header">
       <h2 id="title">Animator's Paradise</h2>
     </header>
     <nav class="navbar">
-        <ul id="navigation">
-          <li><a class="button" href="/">Home</a></li>
-        </ul>
+        <ul id="navigation"></ul>
     </nav>
     <div class="content">
         <a class="button" href="./about-us.html">About Us!</a>
