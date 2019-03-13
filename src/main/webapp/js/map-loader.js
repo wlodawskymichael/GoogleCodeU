@@ -17,7 +17,22 @@
 let map;
 function createMap() {
     map = new google.maps.Map(document.getElementById("map"), {
-        center: {lat: 37.422, lng: -122.084},
+        center: {
+            lat: 37.422, 
+            lng: -122.084
+        },
         zoom: 16
     });
+    const hogwartsMarker = new google.maps.Marker({
+        position: {
+            lat: 37.422,
+            lng: -122.084
+        },
+        map: map,
+        title: 'Hogwarts'
+    });
+    const hogwartsInfoWindow = new google.maps.InfoWindow({
+        content: 'This is Hogwarts, School of Wizardry.'
+    });
+    hogwartsInfoWindow.open(map, hogwartsMarker);
 }
