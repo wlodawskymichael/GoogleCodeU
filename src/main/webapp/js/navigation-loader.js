@@ -45,6 +45,9 @@ function createNavigationBar() {
               '/stats-page.html', 'Statistics'))));
 
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+              '/map.html', 'Sightings Map'))));
+
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
               '/logout', 'Logout'))));
         } else {
           navigationElement.appendChild(
