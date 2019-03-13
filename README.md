@@ -1,5 +1,9 @@
 # Hogwarts Live
 
+![Version](https://img.shields.io/badge/version-0.0.1-black.svg?longCache=true&style=flat-square)
+[![Deployment](https://img.shields.io/badge/deployment-gcloud-1B9CE2.svg?longCache=true&style=flat-square)](http://cloud.google.com/)
+![Language](https://img.shields.io/badge/language-java-orange.svg)
+
 ## Setup
 ### Setting up the Google Map API Key
 1. To gain access to the API Key for local development, go to https://console.cloud.google.com. Note: Make sure you are logged into your CodeU Student account and that your project is set to project ID "sp19-codeu-8-6487".
