@@ -17,7 +17,7 @@
 /** 
  * Create the Google Map and center it around "Hogwarts" aka the Googleplex 
  * @return the initialized map
- * */
+ */
 function createMap() {
     //Create the Google Map.
     const map = new google.maps.Map(document.getElementById("map"), {
