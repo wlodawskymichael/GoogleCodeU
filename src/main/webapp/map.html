@@ -6,7 +6,8 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzmDWU53vZ1-31h4RX_g-L1MAHQvy9v7I"></script>
         <script src="./js/map-loader.js"></script>
     </head>
-    <body onload="createMap();">
+    <!-- TODO: From branch style_pt2 I implemented a global navigation bar -->
+    <body onload=" initializeData(createMap());">
         <h1>Wizard Sightings</h1>
         <p>Have you seen a Wizard?</p>
         <div id="map"></div>

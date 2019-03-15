@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-/** Create the Google Map and center it around "Hogwarts" aka the Googleplex */
+/** 
+ * Create the Google Map and center it around "Hogwarts" aka the Googleplex 
+ * @return the initialized map
+ * */
 function createMap() {
     //Create the Google Map.
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -27,6 +30,22 @@ function createMap() {
     //Create a marker for "Hogwarts" aka the Googleplex.
     createMapMarker(map, 37.422, -122.084, 
         'Hogwarts', 'This is Hogwarts, School of Wizardry');
+    return map;
+}
+
+/**
+ * Put in the predefined data from already gathered sightings.
+ * @param {google.maps.Map} map 
+ */
+function initializeData(map) {
+    fetch('/map-data').then((res) => {
+        return res.json();
+    }).then((wizardSightings) => {
+        wizardSightings.forEach((wizardSighting) => {
+            createMapMarker(map, wizardSighting.lat, wizardSighting.lng, 
+                "Wizard Sighting", ("Found in " + wizardSighting.state));
+        });
+    });
 }
 
 /**
