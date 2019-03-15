@@ -18,16 +18,29 @@ package com.google.codeu.servlets;
 
 import java.io.IOException;
 import java.util.Scanner;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.codeu.data.WizardSighting;
+import com.google.api.client.googleapis.auth.clientlogin.ClientLogin.Response;
 
 @WebServlet("/map-data")
 public class WizardDataServlet extends HttpServlet {
+    private class WizardSighting {
+        private String state;
+        private double lat;
+        private double lng;
+    
+        private WizardSighting(String state, double lat, double lng) {
+            this.state = state;
+            this.lat = lat;
+            this.lng = lng;
+        }
+    }
     private JsonArray wizardSightingsArray;
 
     @Override
@@ -49,6 +62,11 @@ public class WizardDataServlet extends HttpServlet {
             }
         }
         read.close();
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        res.getOutputStream().println(wizardSightingsArray.toString());
     }
 }
