@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sp19-codeu-8-6487",
+  "private_key_id": "5beaf0f4649b7ba18544ad41011509c2a921317d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDhxD6/xVaQcHeC\nI5KWBS33/R6h9N1+R3tk5+TvlzHKIsYUMWX9NibV7YOnnEu9hQxv5xP1FKypBTOI\nSgMGVSGG25tZCA4JmoV2J3Xlcs05EP3PG6UA4/Vv7z6XrAvqZxGCR2HpDD1CjB9s\nybt+UXJlrsgvb5Cco1zIkCwVg8Uvlh4Hd3Dm2QuPumEK61w63Rp83PGTkh9T6SoH\nUCIt87pTwVz5Xb6+9JBpWcG7f1tJeqDzcNt6UmObM5wmksZ/JmHBBPQVL6lB0kA1\nQFfIffb8p1gXkMvQTzU21+Xplp6U8/t/QB9iMAA4WZs2Zh4GkEVUdDS9K0eGCX1e\ngkyrEUnPAgMBAAECggEAUULWpyX7e2/PxDrTl0Xz/s/Px9GgK8TE6FQDdi2AkVYk\n373MDPEB13xvJ9Q8+tE54clVyKARaaDipIqnPg9ESwsehlQ84T4KDbY0XEsPDRxN\njs9Pe9uRSyHc8LDPdSZ2CeNxnXV3U02mPfz6jIP6XhkkGtbYQVkXm2UxSOkt/2sm\nycux2O4pT+dNey//b/OF+jo1+/VEKuKWXjKNidJiqCrr637UxXQeg0wMH8vgAfH2\n5E3g4j1sw3kUeZS5g0wUGzK2B9GLpGBnuJPiiFIN1OLX9jL3+OpV8y6962TDKlIg\nMYx751QvmaCdKzzdwbFznaAIWVojuk1qLXDv0fhlkQKBgQD8vNXPX0vPoYZTYrLu\naTVjuD2Jq53FF0r3KyznPvmSnmWZE1W4k8zc8kOgtHrjBvzvrxTFLBIuuGBedJZA\nR6v+22YJbMhNpNeptnsS/S7jMfp287hE4ZAJXXbeAT6N7S6uQfgj2Ruq4XUOamuE\nzm4PMgVFyvNgRCw1sl6ZGingxwKBgQDkrkjnmO/08YdEKfqQF33S8aMKB6x2zIks\nsrFV/uB+nAAuDagVv+ws47QEh8hWjcOr1n3IOzvdlCKgshIyHAaQWuqvuREj9lwT\nMNfK82RIDt19UXAfv4Ys4qaB8VKOiGSW4JJWzqHZ1v5ZP7tAn8XdMoJ9afAigdlp\nSMMAr11WuQKBgQCmxj0YoDu4gU/QSnrkU8yFRxhkdjify+UOARGabrXliFxmjJmu\nOOmgisURkMbedMgHqbK9AX3mEoiVC73yINlgTYqhgYUTp0kglmfUefmstlgekmjw\nGyAe7ev4Rz3uDasWFjYWAbf+JNRHdPYKJuX9ZPaRvYCn75R0woUl5lvoFQKBgFf+\ngGstvFfigIxIIvRDNdVvya7YWRK1jas3b2mJ09SkLqWJ9722xihXzjNYFEzJ7Bs5\nQ9lCgby3fcOcAchqZFQzx86qReAysidoSgD8OwBHSA8qwRxWVEj9RdkGhR/3d81e\nyLDCfiEWy3SIQ4OQd1CwWOntU8vTb1dF+lNPJ3lxAoGBAOfW1WVxfqJ4dcV4uzh7\nf1oLDeG7+sm9KalCDItLoLDXXpVgosGnq/yI7q+JUH6KAiFk1xnFiuOL9P0SG2GD\nFWwWc9b2yaweSYBL9OKDvncHXpYYjms86nYfTFAmLLgLe2SGHnFxbGEB//V12/VA\nJBk9S5cPkXectWJhav8bkBjx\n-----END PRIVATE KEY-----\n",
+  "client_email": "hogwarts-live@sp19-codeu-8-6487.iam.gserviceaccount.com",
+  "client_id": "116806785673765125532",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hogwarts-live%40sp19-codeu-8-6487.iam.gserviceaccount.com"
+}
