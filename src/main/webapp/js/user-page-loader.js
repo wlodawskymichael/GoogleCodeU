@@ -45,7 +45,10 @@ function showMessageForm() {
         }
       });
       
-      document.getElementById('about-me-form').classList.remove('hidden');
+   
+  document.getElementById('about-me-form').classList.remove('hidden');
+   
+  
 }
 
 /** Fetches messages and add them to the page. */
@@ -53,11 +56,11 @@ function fetchMessages() {
   const url = '/messages?user=' + parameterUsername;
   fetch(url)
       .then((response) => {
-        return response.json();
+        return response.json();	
       })
       .then((messages) => {
         const messagesContainer = document.getElementById('message-container');
-        if (messages.length == 0) {
+        if (messages.length == 0) {	
           messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
         } else {
           messagesContainer.innerHTML = '';
@@ -67,6 +70,8 @@ function fetchMessages() {
           messagesContainer.appendChild(messageDiv);
         });
       });
+
+
 }
 
 /**About Me*/
@@ -116,4 +121,5 @@ function buildUI() {
   showMessageForm();
   fetchMessages();
   fetchAboutMe();
+
 }
