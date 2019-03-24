@@ -83,7 +83,7 @@ public class MessageServlet extends HttpServlet {
     String recipient = request.getParameter("recipient");
     
     // Styling text
-    text = convertBBCode(text);
+    //text = convertBBCode(text);
 
     // Replacing image url to img tag
     String imageUrlRegexExpression = "(https?://\\S+\\.(png|jpg|gif))";
@@ -101,7 +101,7 @@ public class MessageServlet extends HttpServlet {
   /**
    * Parses message text and changes BBCode tags on styled text to HTML tags
    */
-  public String convertBBCode(String text){
+  /*public String convertBBCode(String text){
       String temp = text;
 
       Map<String , String> bbMap = new HashMap<String , String>();
@@ -115,5 +115,5 @@ public class MessageServlet extends HttpServlet {
       }
       return temp;
 
-  }
+  }*/
 }
