@@ -109,8 +109,13 @@ function buildMessageDiv(message) {
   messageDiv.appendChild(headerDiv);
   messageDiv.appendChild(bodyDiv);
 
-
-
+  if (message.sentimentScore > 0.0){
+    messageDiv.style.backgroundColor = "#fce158";
+  } else if (message.sentimentScore == 0.0){
+    messageDiv.style.backgroundColor = "#c5f990";
+  } else {
+    messageDiv.style.backgroundColor = "#a9f9ef";
+  }
   return messageDiv;
 }
 
