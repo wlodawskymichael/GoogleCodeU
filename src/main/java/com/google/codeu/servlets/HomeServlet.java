@@ -39,11 +39,13 @@ public class HomeServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
 
+    boolean isUserLoggedIn = userService.isUserLoggedIn();
+    request.setAttribute("isUserLoggedIn", isUserLoggedIn);
+
     // If the user is already logged in, redirect to their page
     if (userService.isUserLoggedIn()) {
       String user = userService.getCurrentUser().getEmail();
       request.setAttribute("username", user);
-      return;
     }
 
     // Redirect to Google login page. That page will then redirect back to /login,
