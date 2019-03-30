@@ -133,9 +133,9 @@ public class Datastore {
    */
   public User getUser(String email) {
 
-     Query query = new Query("User")
+     Query userEmailQuery = new Query("User")
        .setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL, email));
-     PreparedQuery results = datastore.prepare(query);
+     PreparedQuery results = datastore.prepare(userEmailQuery);
      Entity userEntity = results.asSingleEntity();
      if(userEntity == null) {
       return null;

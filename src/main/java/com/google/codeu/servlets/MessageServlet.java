@@ -123,12 +123,15 @@ public class MessageServlet extends HttpServlet {
 
   }
 
+  /**
+   * Uses Google NLP API to get the sentiment score of a message
+   */
   private float getSentimentScore(String text) throws IOException {
-      Document doc = Document.newBuilder()
+      Document message = Document.newBuilder()
           .setContent(text).setType(Type.PLAIN_TEXT).build();
 
       LanguageServiceClient languageService = LanguageServiceClient.create();
-      Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+      Sentiment sentiment = languageService.analyzeSentiment(message).getDocumentSentiment();
       languageService.close();
 
       return sentiment.getScore();
