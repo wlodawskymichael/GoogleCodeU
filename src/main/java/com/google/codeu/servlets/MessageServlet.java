@@ -79,13 +79,13 @@ public class MessageServlet extends HttpServlet {
     }
 
     String user = userService.getCurrentUser().getEmail();
-    String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    String text = request.getParameter("text");
     String recipient = request.getParameter("recipient");
     
     // Styling text
     //text = convertBBCode(text);
 
-    // Replacing image url to img tag
+    // Replacing image url to img tag 
     String imageUrlRegexExpression = "(https?://\\S+\\.(png|jpg|gif))";
     String htmlImgTagReplacement = "<img src=\"$1\" />";
     System.out.println(text);
@@ -101,19 +101,19 @@ public class MessageServlet extends HttpServlet {
   /**
    * Parses message text and changes BBCode tags on styled text to HTML tags
    */
-  /*public String convertBBCode(String text){
-      String temp = text;
+ // public String convertBBCode(String text){
+  //    String temp = text;
+//
+    //  Map<String , String> bbMap = new HashMap<String , String>();
+      //bbMap.put("\\[b\\](.+?)\\[/b\\]", "<strong>$1</strong>");
+      //bbMap.put("\\[i\\](.+?)\\[/i\\]", "<em>$1</em>");
+      //bbMap.put("\\[u\\](.+?)\\[/u\\]", "<u>$1</u>");
+      //bbMap.put("\\[s\\](.+?)\\[/s\\]", "<del>$1</del>");
 
-      Map<String , String> bbMap = new HashMap<String , String>();
-      bbMap.put("\\[b\\](.+?)\\[/b\\]", "<strong>$1</strong>");
-      bbMap.put("\\[i\\](.+?)\\[/i\\]", "<em>$1</em>");
-      bbMap.put("\\[u\\](.+?)\\[/u\\]", "<u>$1</u>");
-      bbMap.put("\\[s\\](.+?)\\[/s\\]", "<del>$1</del>");
+      //for (Map.Entry entry: bbMap.entrySet()) {
+       // temp = temp.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+      //}
+      //return temp;
 
-      for (Map.Entry entry: bbMap.entrySet()) {
-        temp = temp.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-      }
-      return temp;
-
-  }*/
+  //}
 }
