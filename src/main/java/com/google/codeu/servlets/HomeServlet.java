@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Redirects the user to the Google login page or their page if they're already logged in.
  */
-@WebServlet("/home")
+@WebServlet("/")
 public class HomeServlet extends HttpServlet {
 
   @Override
