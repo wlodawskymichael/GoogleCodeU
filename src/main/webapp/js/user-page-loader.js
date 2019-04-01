@@ -39,18 +39,30 @@ function showMessageForm() {
       })
       .then((loginStatus) => {
         if (loginStatus.isLoggedIn && loginStatus.username == parameterUsername) {
-          const messageForm = document.getElementById('message-form');
-          messageForm.action = '/messages?recipient=' + parameterUsername;
-          messageForm.classList.remove('hidden');
+          fetchImageUploadUrlAndShowForm()
           document.getElementById('about-me-form').classList.remove('hidden');
         } else if (loginStatus.isLoggedIn) {
-          const messageForm = document.getElementById('message-form');
-          messageForm.action = '/messages?recipient=' + parameterUsername;
-          messageForm.classList.remove('hidden');
+          fetchImageUploadUrlAndShowForm()
         }
       });
       
       //document.getElementById('about-me-form').classList.remove('hidden');
+}
+
+/** Gets image upload Url from ImageUploadUrlServlet and shows form to user */
+function fetchImageUploadUrlAndShowForm() {
+  fetch('/image-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        console.log("Image upload url!!!!!!!!!!!!!! : ")
+        console.log(imageUploadUrl)
+        const messageForm = document.getElementById('message-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+        document.getElementById('recipientInput').value = parameterUsername;
+      });
 }
 
 /** Fetches messages and add them to the page. */
