@@ -31,6 +31,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.Document.Type;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -56,7 +60,7 @@ public class MessageServlet extends HttpServlet {
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
-      response.getWriter().println("[]");
+      response.getWriter().println("[not logged in]");
       return;
     }
 
@@ -81,9 +85,11 @@ public class MessageServlet extends HttpServlet {
     String user = userService.getCurrentUser().getEmail();
     String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
     String recipient = request.getParameter("recipient");
-    
+
     // Styling text
     text = convertBBCode(text);
+    float sentimentScore = this.getSentimentScore(text);
+
 
     // Replacing image url to img tag
     String imageUrlRegexExpression = "(https?://\\S+\\.(png|jpg|gif))";
@@ -92,7 +98,7 @@ public class MessageServlet extends HttpServlet {
     String textWithImageTags = text.replaceAll(imageUrlRegexExpression, htmlImgTagReplacement);
     System.out.println(textWithImageTags);
 
-    Message message = new Message(user, textWithImageTags, recipient);
+    Message message = new Message(user, textWithImageTags, recipient, sentimentScore);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.html?user=" + recipient);
@@ -116,4 +122,19 @@ public class MessageServlet extends HttpServlet {
       return temp;
 
   }
+
+  /**
+   * Uses Google NLP API to get the sentiment score of a message
+   */
+  private float getSentimentScore(String text) throws IOException {
+      Document message = Document.newBuilder()
+          .setContent(text).setType(Type.PLAIN_TEXT).build();
+
+      LanguageServiceClient languageService = LanguageServiceClient.create();
+      Sentiment sentiment = languageService.analyzeSentiment(message).getDocumentSentiment();
+      languageService.close();
+
+      return sentiment.getScore();
+  }
+
 }

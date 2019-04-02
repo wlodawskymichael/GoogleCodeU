@@ -44,7 +44,7 @@ function showMessageForm() {
           messageForm.classList.remove('hidden');
         }
       });
-      
+
       document.getElementById('about-me-form').classList.remove('hidden');
 }
 
@@ -80,7 +80,7 @@ function fetchAboutMe(){
     if(aboutMe == ''){
       aboutMe = 'This user has not entered any information yet.';
     }
-    
+
     aboutMeContainer.innerHTML = aboutMe;
 
   });
@@ -96,7 +96,9 @@ function buildMessageDiv(message) {
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
   headerDiv.appendChild(document.createTextNode(
-      message.user + ' - ' + new Date(message.timestamp)));
+    message.user + ' - ' +
+    new Date(message.timestamp) +
+    ' [' + message.sentimentScore + ']'));
 
   const bodyDiv = document.createElement('div');
   bodyDiv.classList.add('message-body');
@@ -107,6 +109,13 @@ function buildMessageDiv(message) {
   messageDiv.appendChild(headerDiv);
   messageDiv.appendChild(bodyDiv);
 
+  if (message.sentimentScore > 0.0){
+    messageDiv.style.backgroundColor = "#fce158";
+  } else if (message.sentimentScore == 0.0){
+    messageDiv.style.backgroundColor = "#c5f990";
+  } else {
+    messageDiv.style.backgroundColor = "#a9f9ef";
+  }
   return messageDiv;
 }
 
