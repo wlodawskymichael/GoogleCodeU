@@ -45,8 +45,6 @@ function showMessageForm() {
           fetchImageUploadUrlAndShowForm()
         }
       });
-      
-      //document.getElementById('about-me-form').classList.remove('hidden');
 }
 
 /** Gets image upload Url from ImageUploadUrlServlet and shows form to user */
