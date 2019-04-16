@@ -35,9 +35,7 @@ public class UserInfoServlet extends HttpServlet {
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
 
-  response.setContentType("text/html");
-
-  JsonObject jsonObject = new JsonObject();
+  response.setContentType("json/application");
   
   String user = request.getParameter("user");
   
@@ -52,9 +50,9 @@ public class UserInfoServlet extends HttpServlet {
     return;
   }
   
-  JsonObject json = userData.getUserJson();
+  JsonObject userJson = userData.getUserJson();
   
-  response.getOutputStream().println(json.toString());
+  response.getOutputStream().println(userJson.toString());
  }
  
  @Override
