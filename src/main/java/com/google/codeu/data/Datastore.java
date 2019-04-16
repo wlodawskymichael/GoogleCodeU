@@ -66,12 +66,12 @@ public class Datastore {
   /**
    * Gets all posts in a given thread
    * 
-   * @return a list of posts in a thread
+   * @return a list of posts in a thread. List is sorted by time descending.
    */
-  public List<Post> getPosts(String threadId) {
+  public List<Post> getPostsFromThread(String threadId) {
     List<Post> posts = new ArrayList<>();
     Query query = new Query("Post")
-                      .setFilter(new Query.FilterPredicate("Thread", FilterOperator.EQUAL, threadId))
+                      .setFilter(new Query.FilterPredicate("threadId", FilterOperator.EQUAL, threadId))
                       .addSort("timestamp", SortDirection.DESCENDING);
     
     PreparedQuery results = datastore.prepare(query);
@@ -86,6 +86,40 @@ public class Datastore {
         long timestamp = (long) entity.getProperty("timestamp");
 
         Post post = new Post(postId, threadid, user, text, timestamp);
+        posts.add(post);
+      } catch (Exception e) {
+        System.err.println("Error reading post.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return posts;
+  }
+
+  /**
+   * Gets all posts from a given user
+   * 
+   * @return a list of posts from a user. List is sorted by time descending.
+   */
+  public List<Post> getPostsFromUser(String user) {
+    List<Post> posts = new ArrayList<>();
+    Query query = new Query("Post")
+                      .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+                      .addSort("timestamp", SortDirection.DESCENDING);
+    
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String postIdString = entity.getKey().getName();
+        UUID postId = UUID.fromString(postIdString);
+        String threadIdString = (String) entity.getProperty("threadId");
+        UUID threadid = UUID.fromString(threadIdString);
+        String user_email = (String) entity.getProperty("user");
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Post post = new Post(postId, threadid, user_email, text, timestamp);
         posts.add(post);
       } catch (Exception e) {
         System.err.println("Error reading post.");
