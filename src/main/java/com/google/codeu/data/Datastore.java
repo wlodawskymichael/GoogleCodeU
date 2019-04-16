@@ -52,6 +52,51 @@ public class Datastore {
     datastore.put(messageEntity);
   }
 
+  /** Stores a Post in the Datastore. */
+  public void storePost(Post post) {
+    Entity postEntity = new Entity("Post", post.getPostId().toString());
+    postEntity.setProperty("threadId", post.getThreadId().toString());
+    postEntity.setProperty("user", post.getUser());
+    postEntity.setProperty("text", post.getText());
+    postEntity.setProperty("timestamp", post.getTimestamp());
+
+    datastore.put(postEntity);
+  }
+
+  /**
+   * Gets all posts in a given thread
+   * 
+   * @return a list of posts in a thread
+   */
+  public List<Post> getPosts(String threadId) {
+    List<Post> posts = new ArrayList<>();
+    Query query = new Query("Post")
+                      .setFilter(new Query.FilterPredicate("Thread", FilterOperator.EQUAL, threadId))
+                      .addSort("timestamp", SortDirection.DESCENDING);
+    
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String postIdString = entity.getKey().getName();
+        UUID postId = UUID.fromString(postIdString);
+        String threadIdString = (String) entity.getProperty("threadId");
+        UUID threadid = UUID.fromString(threadIdString);
+        String user = (String) entity.getProperty("user");
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Post post = new Post(postId, threadid, user, text, timestamp);
+        posts.add(post);
+      } catch (Exception e) {
+        System.err.println("Error reading post.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return posts;
+  }
+
   /**
    * Gets messages posted by a specific user.
    *
