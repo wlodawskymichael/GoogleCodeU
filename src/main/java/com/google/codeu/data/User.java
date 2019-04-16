@@ -1,10 +1,11 @@
 package com.google.codeu.data;
 
+import com.google.appengine.repackaged.com.google.gson.JsonObject;
+
 public class User {
 
   private String email;
   private String aboutMe;
-  private String age;
   private int year;
   private String username;
 
@@ -21,10 +22,6 @@ public class User {
     return aboutMe;
   }
 
-  public String getAge() {
-    return age;
-  }
-
   public int getYear() {
     return year;
   }
@@ -32,4 +29,13 @@ public class User {
   public String getUsername() {
     return username;
   }
+
+  public JsonObject getUserJson() {
+    JsonObject json = new JsonObject();
+    json.addProperty("email", email);
+    json.addProperty("aboutme", aboutMe);
+    json.addProperty("year", year);
+    json.addProperty("username", username);
+    return json;
+  } 
 }
