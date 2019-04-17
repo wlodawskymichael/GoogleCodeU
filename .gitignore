@@ -1,2 +1,6 @@
 /target/
-.classpath
+/.classpath
+/.settings/
+/.factorypath/
+/bin/
+/.vscode/
