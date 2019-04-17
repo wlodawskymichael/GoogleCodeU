@@ -36,24 +36,38 @@ function setPageTitle() {
  */
 
  /**
-  * 
+  * Helper function to make it easier to modularize html styling for 
+  * alerting the user they need to add information.
+  */
+  function alertUserToEdit(elementId, message) {
+    const usernameBlock = document.getElementById(elementId);
+    const editButton = document.createElement("BUTTON");
+    editButton.innerHTML = "Edit";
+    usernameBlock.style.border = "3px";
+    usernameBlock.style.borderStyle = "solid";
+    usernameBlock.style.borderColor = "red";
+    alert(message);
+    usernameBlock.appendChild(editButton);
+  }
+
+ /**
+  * Get the user information and inform the user if they need to make 
+  * changes and/or add information.
   */
   function getUserInfo() {
     fetch('/user-info').then((response) => {
       return response.json();
     }).then((userData) => {
       if (userData.username == null || userData.username == "") {
-        const usernameBlock = document.getElementById('username-block');
-        const editButton = document.createElement("BUTTON");
-        editButton.innerHTML = "Edit";
-        usernameBlock.style.border = "3px";
-        usernameBlock.style.borderStyle = "solid";
-        usernameBlock.style.borderColor = "red";
-        alert("Username field is required!");
-        usernameBlock.appendChild(editButton);
+        alertUserToEdit('username-block', 'Username field is required!');
+      }
+      if (userData.year == null || userData.year == 0) {
+        alertUserToEdit('year-block', 'Year field is required!');
+      }
+      if (userData.aboutMe == null || userData.aboutMe == "") {
+        alertUserToEdit('about-me-block', 'About Me field is required!');
       }
     })
-    //document.getElementById('username-block').innerText = 
   }
 
 /**
@@ -72,7 +86,7 @@ function showMessageForm() {
         }
       });
 
-      document.getElementById('about-me-form').classList.remove('hidden');
+      //document.getElementById('about-me-form').classList.remove('hidden');
 }
 
 /** Fetches messages and add them to the page. */
@@ -151,6 +165,6 @@ function buildUI() {
   setPageTitle();
   showMessageForm();
   fetchMessages();
-  fetchAboutMe();
+  //fetchAboutMe();
   getUserInfo();
 }
