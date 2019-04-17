@@ -30,6 +30,33 @@ function setPageTitle() {
 }
 
 /**
+ * TODO: Add logic to show year, username, and about me if entered. The user should always have 
+ * editing options. However, the infromation should be highlighted and require filling out before
+ * the user can post to a thread.
+ */
+
+ /**
+  * 
+  */
+  function getUserInfo() {
+    fetch('/user-info').then((response) => {
+      return response.json();
+    }).then((userData) => {
+      if (userData.username == null || userData.username == "") {
+        const usernameBlock = document.getElementById('username-block');
+        const editButton = document.createElement("BUTTON");
+        editButton.innerHTML = "Edit";
+        usernameBlock.style.border = "3px";
+        usernameBlock.style.borderStyle = "solid";
+        usernameBlock.style.borderColor = "red";
+        alert("Username field is required!");
+        usernameBlock.appendChild(editButton);
+      }
+    })
+    //document.getElementById('username-block').innerText = 
+  }
+
+/**
  * Shows the message form if the user is logged in.
  */
 function showMessageForm() {
@@ -125,4 +152,5 @@ function buildUI() {
   showMessageForm();
   fetchMessages();
   fetchAboutMe();
+  getUserInfo();
 }

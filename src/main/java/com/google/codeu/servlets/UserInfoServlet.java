@@ -12,7 +12,7 @@ import org.jsoup.safety.Whitelist;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.repackaged.com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
 /**
@@ -35,24 +35,24 @@ public class UserInfoServlet extends HttpServlet {
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
 
-  response.setContentType("json/application");
-  
-  String user = request.getParameter("user");
-  
-  if(user == null || user.equals("")) {
-   // Request is invalid, return empty response
-   return;
-  }
-  
-  User userData = datastore.getUser(user);
+    response.setContentType("application/json");
 
-  if(userData == null) {
+    UserService userService = UserServiceFactory.getUserService();
+    String userEmail = userService.getCurrentUser().getEmail();
+    
+    if(userEmail == null || userEmail.equals("")) {
+    // Request is invalid, return empty response
     return;
-  }
-  
-  JsonObject userJson = userData.getUserJson();
-  
-  response.getOutputStream().println(userJson.toString());
+    }
+    
+    User userData = datastore.getUser(userEmail);
+
+    if(userData == null) {
+        return;
+    }
+    
+    JsonObject userJson = userData.getUserJson();
+    response.getWriter().println(userJson.toString());
  }
  
  @Override

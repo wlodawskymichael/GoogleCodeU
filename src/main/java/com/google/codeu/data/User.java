@@ -1,13 +1,13 @@
 package com.google.codeu.data;
 
-import com.google.appengine.repackaged.com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 
 public class User {
 
-  private String email;
-  private String aboutMe;
-  private int year;
-  private String username;
+  private String email = "";
+  private String aboutMe = "";
+  private int year = 0;
+  private String username = "";
 
   public User(String email, String aboutMe) {
     this.email = email;
