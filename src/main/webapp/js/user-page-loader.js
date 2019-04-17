@@ -31,12 +31,6 @@ function setPageTitle() {
   document.title = parameterUsername + ' - User Page';
 }
 
-/**
- * TODO: Add logic to show year, username, and about me if entered. The user should always have 
- * editing options. However, the infromation should be highlighted and require filling out before
- * the user can post to a thread.
- */
-
  /**
   * Helper function to make it easier to modularize html styling for 
   * alerting the user they need to add information.
@@ -71,16 +65,19 @@ function setPageTitle() {
         needToWrite = alertUserToEdit('username-block', 'Username field is required!', 'username');
       } else {
         document.getElementById('username-block').innerText = userData.username;
+        param['username'] = userData.username;
       }
       if (userData.year == null || userData.year == 0) {
         needToWrite = alertUserToEdit('year-block', 'Year field is required!', 'year');
       } else {
         document.getElementById('year-block').innerText = userData.year;
+        param['year']= userData.year;
       }
       if (userData.aboutMe == null || userData.aboutMe == "") {
         needToWrite = alertUserToEdit('about-me-block', 'About Me field is required!', 'aboutMe');
       } else {
         document.getElementById('about-me-block').innerText = userData.aboutMe;
+        param['aboutMe'] = userData.aboutMe;
       }
       if (needToWrite) {
         var url = '/user-info';
@@ -137,23 +134,6 @@ function fetchMessages() {
 }
 
 /**
- * About Me
- * */
-/*function fetchAboutMe(){
-  const url = '/about?user=' + parameterUsername;
-  fetch(url).then((response) => {
-    return response.text();
-  }).then((aboutMe) => {
-    const aboutMeContainer = document.getElementById('about-me-container');
-    if(aboutMe == ''){
-      aboutMe = 'This user has not entered any information yet.';
-    }
-    aboutMeContainer.innerHTML = aboutMe;
-  });
-}*/
-
-
-/**
  * Builds an element that displays the message.
  * @param {Message} message
  * @return {Element}
@@ -190,6 +170,5 @@ function buildUI() {
   setPageTitle();
   showMessageForm();
   fetchMessages();
-  //fetchAboutMe();
   getUserInfo();
 }
