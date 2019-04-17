@@ -40,14 +40,18 @@ function setPageTitle() {
   * alerting the user they need to add information.
   */
   function alertUserToEdit(elementId, message) {
-    const usernameBlock = document.getElementById(elementId);
-    const editButton = document.createElement("BUTTON");
-    editButton.innerHTML = "Edit";
-    usernameBlock.style.border = "3px";
-    usernameBlock.style.borderStyle = "solid";
-    usernameBlock.style.borderColor = "red";
-    alert(message);
-    usernameBlock.appendChild(editButton);
+    const response = prompt(message, "");
+    if (response == "" || response == null) {
+      alertUserToEdit(elementId, message);
+    }
+    // Make sure we have a valid year
+    if (elementId == 'year-block') {
+      const num = Number(response);
+      if (!(num >= 1 && num <= 5)) {
+        alertUserToEdit(elementId, "Year must be a valid integer between 1 and 5!");
+      }
+    }
+    document.getElementById(elementId).innerText = response;
   }
 
  /**
@@ -85,8 +89,6 @@ function showMessageForm() {
           messageForm.classList.remove('hidden');
         }
       });
-
-      //document.getElementById('about-me-form').classList.remove('hidden');
 }
 
 /** Fetches messages and add them to the page. */
