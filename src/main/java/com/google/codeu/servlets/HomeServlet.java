@@ -43,7 +43,7 @@ public class HomeServlet extends HttpServlet {
     request.setAttribute("isUserLoggedIn", isUserLoggedIn);
 
     // If the user is already logged in, redirect to their page
-    if (userService.isUserLoggedIn()) {
+    if (isUserLoggedIn) {
       String user = userService.getCurrentUser().getEmail();
       request.setAttribute("username", user);
     }
