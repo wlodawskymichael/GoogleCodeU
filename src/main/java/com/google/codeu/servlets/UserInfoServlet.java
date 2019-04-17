@@ -1,5 +1,6 @@
 package com.google.codeu.servlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.google.gson.JsonParser;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
@@ -66,13 +69,33 @@ public class UserInfoServlet extends HttpServlet {
   }
   
   String userEmail = userService.getCurrentUser().getEmail();
-  String aboutMe = Jsoup.clean(request.getParameter("about-me"), Whitelist.none());
-  //String aboutMe = request.getParameter("about-me");
-  User user = new User(userEmail, aboutMe);
+
+  //Process the body of the request for the user's json data
+  StringBuffer jsonBuffer = new StringBuffer();
+  String line = null;
+  //Read in body parameters
+  try {
+    BufferedReader requestBody = request.getReader();
+    while ((line = requestBody.readLine()) != null) {
+        jsonBuffer.append(line);
+
+        System.out.println(line + " Fuck you");
+    }
+  } catch (Exception e) { 
+    System.out.println(e);
+  }
+  //Convert body parameters to json
+  JsonObject bodyJson = new JsonParser().parse(jsonBuffer.toString()).getAsJsonObject();
+  JsonElement usernameElement = bodyJson.getAsJsonObject().get("username");
+  String username = (usernameElement == null) ? "" : usernameElement.getAsString();
+  JsonElement aboutMeElement = bodyJson.getAsJsonObject().get("aboutMe");
+  String aboutMe = (aboutMeElement == null) ? "" : aboutMeElement.getAsString();
+  JsonElement yearElement = bodyJson.getAsJsonObject().get("year");
+  int year = (yearElement == null) ? 0 : yearElement.getAsInt();
+
+  User user = new User(userEmail, aboutMe, username, year);
   datastore.storeUser(user);
-  //System.out.println("Saving about me for " + userEmail);
-  // TODO: save the data
-  
-  response.sendRedirect("/user-page.html?user=" + userEmail);
+
+  response.getWriter().println(jsonBuffer.toString());
  }
 }

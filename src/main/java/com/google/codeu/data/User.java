@@ -14,6 +14,13 @@ public class User {
     this.aboutMe = aboutMe;
   }
 
+  public User(String email, String aboutMe, String username, int year) {
+    this.email = email;
+    this.aboutMe = aboutMe;
+    this.username = username;
+    this.year = year;
+  }
+
   public String getEmail(){
     return email;
   }
@@ -33,7 +40,7 @@ public class User {
   public JsonObject getUserJson() {
     JsonObject json = new JsonObject();
     json.addProperty("email", email);
-    json.addProperty("aboutme", aboutMe);
+    json.addProperty("aboutMe", aboutMe);
     json.addProperty("year", year);
     json.addProperty("username", username);
     return json;

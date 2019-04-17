@@ -17,6 +17,8 @@
 // Get ?user=XYZ parameter value
 const urlParams = new URLSearchParams(window.location.search);
 const parameterUsername = urlParams.get('user');
+var searchParams = {};
+
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
@@ -39,7 +41,7 @@ function setPageTitle() {
   * Helper function to make it easier to modularize html styling for 
   * alerting the user they need to add information.
   */
-  function alertUserToEdit(elementId, message) {
+  function alertUserToEdit(elementId, message, param) {
     const response = prompt(message, "");
     if (response == "" || response == null) {
       alertUserToEdit(elementId, message);
@@ -48,10 +50,12 @@ function setPageTitle() {
     if (elementId == 'year-block') {
       const num = Number(response);
       if (!(num >= 1 && num <= 5)) {
-        alertUserToEdit(elementId, "Year must be a valid integer between 1 and 5!");
+        alertUserToEdit(elementId, "Year must be a valid Integer between 1 and 5!");
       }
     }
     document.getElementById(elementId).innerText = response;
+    searchParams[param] = response;
+    return true;
   }
 
  /**
@@ -59,18 +63,38 @@ function setPageTitle() {
   * changes and/or add information.
   */
   function getUserInfo() {
+    var needToWrite = false;
     fetch('/user-info').then((response) => {
       return response.json();
     }).then((userData) => {
       if (userData.username == null || userData.username == "") {
-        alertUserToEdit('username-block', 'Username field is required!');
+        needToWrite = alertUserToEdit('username-block', 'Username field is required!', 'username');
+      } else {
+        document.getElementById('username-block').innerText = userData.username;
       }
       if (userData.year == null || userData.year == 0) {
-        alertUserToEdit('year-block', 'Year field is required!');
+        needToWrite = alertUserToEdit('year-block', 'Year field is required!', 'year');
+      } else {
+        document.getElementById('year-block').innerText = userData.year;
       }
       if (userData.aboutMe == null || userData.aboutMe == "") {
-        alertUserToEdit('about-me-block', 'About Me field is required!');
+        needToWrite = alertUserToEdit('about-me-block', 'About Me field is required!', 'aboutMe');
+      } else {
+        document.getElementById('about-me-block').innerText = userData.aboutMe;
       }
+      if (needToWrite) {
+        var url = '/user-info';
+        const info = {
+          method: 'POST',
+          body: JSON.stringify(searchParams),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+        return fetch(url, info);
+      }
+    }).then((response) => {
+      console.log(response.json());
     })
   }
 
@@ -112,9 +136,10 @@ function fetchMessages() {
       });
 }
 
-/**About Me*/
-
-function fetchAboutMe(){
+/**
+ * About Me
+ * */
+/*function fetchAboutMe(){
   const url = '/about?user=' + parameterUsername;
   fetch(url).then((response) => {
     return response.text();
@@ -123,11 +148,9 @@ function fetchAboutMe(){
     if(aboutMe == ''){
       aboutMe = 'This user has not entered any information yet.';
     }
-
     aboutMeContainer.innerHTML = aboutMe;
-
   });
-}
+}*/
 
 
 /**
