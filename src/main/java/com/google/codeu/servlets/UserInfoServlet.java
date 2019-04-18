@@ -36,6 +36,7 @@ public class UserInfoServlet extends HttpServlet {
 
     if (userEmail == null || userEmail.equals("")) {
       // Request is invalid, return empty response
+      response.sendRedirect("/");
       return;
     }
 
@@ -69,7 +70,7 @@ public class UserInfoServlet extends HttpServlet {
       while ((line = requestBody.readLine()) != null) {
         jsonBuffer.append(line);
 
-        System.out.println(line + " Fuck you");
+        System.out.println(line);
       }
     } catch (Exception e) {
       System.out.println(e);
