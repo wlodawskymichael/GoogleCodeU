@@ -65,20 +65,21 @@ function setPageTitle() {
         needToWrite = alertUserToEdit('username-block', 'Username field is required!', 'username');
       } else {
         document.getElementById('username-block').innerText = userData.username;
-        param['username'] = userData.username;
+        searchParams['username'] = userData.username;
       }
       if (userData.year == null || userData.year == 0) {
         needToWrite = alertUserToEdit('year-block', 'Year field is required!', 'year');
       } else {
         document.getElementById('year-block').innerText = userData.year;
-        param['year']= userData.year;
+        searchParams['year']= userData.year;
       }
       if (userData.aboutMe == null || userData.aboutMe == "") {
         needToWrite = alertUserToEdit('about-me-block', 'About Me field is required!', 'aboutMe');
       } else {
         document.getElementById('about-me-block').innerText = userData.aboutMe;
-        param['aboutMe'] = userData.aboutMe;
+        searchParams['aboutMe'] = userData.aboutMe;
       }
+      console.log(searchParams);
       if (needToWrite) {
         var url = '/user-info';
         const info = {

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/user-info")
 public class UserInfoServlet extends HttpServlet {
 
+  private static final long serialVersionUID = 1L;
   private Datastore datastore;
 
   @Override
@@ -31,12 +32,12 @@ public class UserInfoServlet extends HttpServlet {
 
     response.setContentType("application/json");
 
+
     UserService userService = UserServiceFactory.getUserService();
     String userEmail = userService.getCurrentUser().getEmail();
 
     if (userEmail == null || userEmail.equals("")) {
       // Request is invalid, return empty response
-      response.sendRedirect("/");
       return;
     }
 
@@ -47,6 +48,7 @@ public class UserInfoServlet extends HttpServlet {
     }
 
     JsonObject userJson = userData.getUserJson();
+    System.out.println(userJson.toString());
     response.getWriter().println(userJson.toString());
   }
 
