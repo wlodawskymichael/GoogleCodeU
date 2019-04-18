@@ -55,8 +55,6 @@ public class ThreadServlet extends HttpServlet {
         String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
         String topic = Jsoup.clean(request.getParameter("topic"), Whitelist.none());
         String title = Jsoup.clean(request.getParameter("title"), Whitelist.none());
-        // String threadIdString = Jsoup.clean(request.getParameter("thread"), Whitelist.none());
-        // UUID threadId = UUID.fromString(threadIdString);
         
         Thread thread = new Thread(null, title, topic);
         Post firstPost = new Post(thread.getThreadId(), userEmail, text);
