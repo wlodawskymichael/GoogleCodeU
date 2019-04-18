@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,12 +89,53 @@ public class Datastore {
         posts.add(post);
       } catch (Exception e) {
         System.err.println("Error reading post.");
+      }
+    }
+    return posts;
+  }
+
+  /** Stores a thread in the Datastore. **/
+  public void storeThread(Thread thread) {
+    Entity threadEntity = new Entity("Thread", thread.getThreadId().toString());
+    threadEntity.setProperty("firstPostId", thread.getFirstPostId().toString());
+    threadEntity.setProperty("title", thread.getTitle());
+    threadEntity.setProperty("topic", thread.getTopic());
+    threadEntity.setProperty("timestamp", thread.getTimestamp());
+
+    datastore.put(threadEntity);
+  }
+
+  /**
+   * Gets all threads in a given forum, sorted by time descending.
+   *
+   * @return a list of threads in a forum
+   */
+  public List<Thread> getThreads() {
+    List<Thread> threads = new ArrayList<>();
+    Query query = new Query("Thread")
+                  .addSort("timestamp", SortDirection.DESCENDING);
+
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String threadIdString = entity.getKey().getName();
+        UUID threadId = UUID.fromString(threadIdString);
+        String firstPostIdString = (String) entity.getProperty("firstPostId");
+        UUID firstPostId = UUID.fromString(firstPostIdString);
+
+        String title = (String) entity.getProperty("title");
+        String topic = (String) entity.getProperty("topic");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Thread thread = new Thread(threadId, firstPostId, title, topic, timestamp);
+        threads.add(thread);
+      } catch (Exception e) {
+        System.err.println("Error reading thread.");
         System.err.println(entity.toString());
         e.printStackTrace();
       }
     }
-
-    return posts;
+    return threads;
   }
 
   /**
@@ -127,9 +168,42 @@ public class Datastore {
         e.printStackTrace();
       }
     }
-
     return posts;
   }
+
+/**
+ * Gets all threads in a given forum, sorted by time descending.
+ *
+ * @return a list of threads in a forum
+ */
+public List<Thread> getThreadsFromTopic(String topic) {
+  List<Thread> threads = new ArrayList<>();
+  Query query = new Query("Thread")
+                .setFilter(new Query.FilterPredicate("topic", FilterOperator.EQUAL, topic))
+                .addSort("timestamp", SortDirection.DESCENDING);
+
+  PreparedQuery results = datastore.prepare(query);
+  for (Entity entity : results.asIterable()) {
+    try {
+      String threadIdString = entity.getKey().getName();
+      UUID threadId = UUID.fromString(threadIdString);
+      String firstPostIdString = (String) entity.getProperty("firstPostId");
+      UUID firstPostId = UUID.fromString(firstPostIdString);
+
+      String title = (String) entity.getProperty("title");
+      String topicString = (String) entity.getProperty("topic");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      Thread thread = new Thread(threadId, firstPostId, title, topicString, timestamp);
+      threads.add(thread);
+    } catch (Exception e) {
+      System.err.println("Error reading thread.");
+      System.err.println(entity.toString());
+      e.printStackTrace();
+    }
+  }
+  return threads;
+}
 
   /**
    * Gets messages posted by a specific user.
