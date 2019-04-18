@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
       String email = userService.getCurrentUser().getEmail();
       if (datastore.getUser(email) == null) {
         System.out.println("I'm here!!!");
-        User user = new User(email, "");
+        User user = new User(email, "", "", 0);
         datastore.storeUser(user);
       }
       response.sendRedirect("/user-page.html?user=" + email);
