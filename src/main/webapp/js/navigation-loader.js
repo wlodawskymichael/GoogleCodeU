@@ -33,6 +33,9 @@ function addLoginOrLogoutLinkToNavigation() {
       .then((loginStatus) => {
         if (loginStatus.isLoggedIn) {
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+            '/forums.html', 'Forums'))));
+
+          navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
               '/feed.html', 'Feed'))));
 
           navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
