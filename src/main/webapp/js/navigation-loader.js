@@ -24,7 +24,8 @@ function addLoginOrLogoutLinkToNavigation() {
     console.warn('Navigation element not found!');
     return;
   }
-
+  navigationElement.appendChild(createListItem(formatNavBarElement(createLink(
+    '/', 'Home'))));
   fetch('/login-status')
       .then((response) => {
         return response.json();
