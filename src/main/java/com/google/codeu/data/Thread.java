@@ -6,18 +6,16 @@ public class Thread {
 
     private UUID firstPostId;
     private UUID threadId;
-    private UUID forumId;
     private String title;
     private String topic;
     private long timestamp;
 
-    public Thread(UUID forumId, UUID firstPostId, String title, String topic) {
-        this(forumId, UUID.randomUUID(),firstPostId, title, topic, System.currentTimeMillis());
+    public Thread(UUID firstPostId, String title, String topic) {
+        this(UUID.randomUUID(),firstPostId, title, topic, System.currentTimeMillis());
     }
 
-    public Thread(UUID forumId, UUID threadId, UUID firstPostId,
+    public Thread(UUID threadId, UUID firstPostId,
       String title, String topic, long timestamp) {
-        this.forumId = forumId;
         this.firstPostId = firstPostId;
         this.threadId = threadId;
         this.title = title;
@@ -29,12 +27,12 @@ public class Thread {
         this.threadId = Id;
     }
 
-    public UUID getThreadId() {
-        return this.threadId;
+    public void setFirstPostId(UUID id) {
+        this.firstPostId = id;
     }
 
-    public UUID getForumId() {
-        return this.forumId;
+    public UUID getThreadId() {
+        return this.threadId;
     }
 
     public UUID getFirstPostId() {
@@ -49,7 +47,7 @@ public class Thread {
         return this.topic;
     }
 
-    public long getTimstamp() {
+    public long getTimestamp() {
       return this.timestamp;
     }
 }

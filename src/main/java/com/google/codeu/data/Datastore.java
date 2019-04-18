@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,11 +52,52 @@ public class Datastore {
     datastore.put(messageEntity);
   }
 
+  /** Stores a Post in the Datastore. */
+  public void storePost(Post post) {
+    Entity postEntity = new Entity("Post", post.getPostId().toString());
+    postEntity.setProperty("threadId", post.getThreadId().toString());
+    postEntity.setProperty("user", post.getUser());
+    postEntity.setProperty("text", post.getText());
+    postEntity.setProperty("timestamp", post.getTimestamp());
+
+    datastore.put(postEntity);
+  }
+
+  /**
+   * Gets all posts in a given thread
+   * 
+   * @return a list of posts in a thread. List is sorted by time descending.
+   */
+  public List<Post> getPostsFromThread(String threadId) {
+    List<Post> posts = new ArrayList<>();
+    Query query = new Query("Post")
+                      .setFilter(new Query.FilterPredicate("threadId", FilterOperator.EQUAL, threadId))
+                      .addSort("timestamp", SortDirection.DESCENDING);
+    
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String postIdString = entity.getKey().getName();
+        UUID postId = UUID.fromString(postIdString);
+        String threadIdString = (String) entity.getProperty("threadId");
+        UUID threadid = UUID.fromString(threadIdString);
+        String user = (String) entity.getProperty("user");
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Post post = new Post(postId, threadid, user, text, timestamp);
+        posts.add(post);
+      } catch (Exception e) {
+        System.err.println("Error reading post.");
+      }
+    }
+    return posts;
+  }
+
   /** Stores a thread in the Datastore. **/
   public void storeThread(Thread thread) {
     Entity threadEntity = new Entity("Thread", thread.getThreadId().toString());
     threadEntity.setProperty("firstPostId", thread.getFirstPostId().toString());
-    threadEntity.setProperty("forumId", thread.getForumId().toString());
     threadEntity.setProperty("title", thread.getTitle());
     threadEntity.setProperty("topic", thread.getTopic());
     threadEntity.setProperty("timestamp", thread.getTimestamp());
@@ -69,11 +110,10 @@ public class Datastore {
    *
    * @return a list of threads in a forum
    */
-  public List<Thread> getThreadsFromForum(String forumId) {
+  public List<Thread> getThreads() {
     List<Thread> threads = new ArrayList<>();
-    Query query = (name != null) ? new Query("Thread")
-                                    .setFilter(new Query.FilterPredicate("forumId", FilterOperator.EQUAL, forumId))
-                                    .addSort("timestamp", SortDirection.DESCENDING) :
+    Query query = new Query("Thread")
+                  .addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
@@ -82,14 +122,12 @@ public class Datastore {
         UUID threadId = UUID.fromString(threadIdString);
         String firstPostIdString = (String) entity.getProperty("firstPostId");
         UUID firstPostId = UUID.fromString(firstPostIdString);
-        String forumIdString = (String) entity.getProperty("forumId");
-        UUID forumId = UUID.fromString(forumIdString);
 
         String title = (String) entity.getProperty("title");
         String topic = (String) entity.getProperty("topic");
         long timestamp = (long) entity.getProperty("timestamp");
 
-        Thread thread = new Thread(forumId, threadId, firstPostId, title, topic, timestamp);
+        Thread thread = new Thread(threadId, firstPostId, title, topic, timestamp);
         threads.add(thread);
       } catch (Exception e) {
         System.err.println("Error reading thread.");
@@ -97,9 +135,41 @@ public class Datastore {
         e.printStackTrace();
       }
     }
-
     return threads;
-}
+  }
+
+  /**
+   * Gets all posts from a given user
+   * 
+   * @return a list of posts from a user. List is sorted by time descending.
+   */
+  public List<Post> getPostsFromUser(String user) {
+    List<Post> posts = new ArrayList<>();
+    Query query = new Query("Post")
+                      .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+                      .addSort("timestamp", SortDirection.DESCENDING);
+    
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String postIdString = entity.getKey().getName();
+        UUID postId = UUID.fromString(postIdString);
+        String threadIdString = (String) entity.getProperty("threadId");
+        UUID threadid = UUID.fromString(threadIdString);
+        String user_email = (String) entity.getProperty("user");
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Post post = new Post(postId, threadid, user_email, text, timestamp);
+        posts.add(post);
+      } catch (Exception e) {
+        System.err.println("Error reading post.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+    return posts;
+  }
 
 /**
  * Gets all threads in a given forum, sorted by time descending.
@@ -108,9 +178,9 @@ public class Datastore {
  */
 public List<Thread> getThreadsFromTopic(String topic) {
   List<Thread> threads = new ArrayList<>();
-  Query query = (name != null) ? new Query("Thread")
-                                  .setFilter(new Query.FilterPredicate("topic", FilterOperator.EQUAL, topic))
-                                  .addSort("timestamp", SortDirection.DESCENDING) :
+  Query query = new Query("Thread")
+                .setFilter(new Query.FilterPredicate("topic", FilterOperator.EQUAL, topic))
+                .addSort("timestamp", SortDirection.DESCENDING);
 
   PreparedQuery results = datastore.prepare(query);
   for (Entity entity : results.asIterable()) {
@@ -119,14 +189,12 @@ public List<Thread> getThreadsFromTopic(String topic) {
       UUID threadId = UUID.fromString(threadIdString);
       String firstPostIdString = (String) entity.getProperty("firstPostId");
       UUID firstPostId = UUID.fromString(firstPostIdString);
-      String forumIdString = (String) entity.getProperty("forumId");
-      UUID forumId = UUID.fromString(forumIdString);
 
       String title = (String) entity.getProperty("title");
-      String topic = (String) entity.getProperty("topic");
+      String topicString = (String) entity.getProperty("topic");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Thread thread = new Thread(forumId, threadId, firstPostId, title, topic, timestamp);
+      Thread thread = new Thread(threadId, firstPostId, title, topicString, timestamp);
       threads.add(thread);
     } catch (Exception e) {
       System.err.println("Error reading thread.");
@@ -134,7 +202,6 @@ public List<Thread> getThreadsFromTopic(String topic) {
       e.printStackTrace();
     }
   }
-
   return threads;
 }
 
