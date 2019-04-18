@@ -29,6 +29,14 @@
   --gainsboro: #DCDCDC;
 }
 
+html {
+  background-image: url('../attributes/background.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 /* Set default font. */
 * {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -48,6 +56,16 @@ body {
   height: 100%;
   margin: 8px;
   float: none;
+}
+
+.center {
+    width: 400px;
+    height: 600px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-62.5%, -50%);
+    background-color: rgba(51, 49, 49, 0.973);
 }
 
 /* Clear floats for new-line alignment after images. */
