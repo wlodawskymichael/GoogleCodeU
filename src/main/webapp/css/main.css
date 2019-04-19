@@ -29,6 +29,14 @@
   --gainsboro: #DCDCDC;
 }
 
+html {
+  background-image: url('../attributes/background.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 /* Set default font. */
 * {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -39,6 +47,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  color: aliceblue;
 }
 
 /* Seperate content of webpage from the edge of the screen. */
@@ -48,6 +57,18 @@ body {
   height: 100%;
   margin: 8px;
   float: none;
+}
+
+.center {
+    width: 400px;
+    height: 600px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(51, 49, 49, 0.973);
+    padding: 8px;
+    text-align: center;
 }
 
 /* Clear floats for new-line alignment after images. */
@@ -106,13 +127,18 @@ h2 {
 
 /* Add background color to the navigation bar */
 .navbar {
-  background-color: rgba(220, 220, 220, .39) 
+  background-color: rgba(220, 220, 220, .39);
+  color: black;
 }
 
 /* Remove bullet points from navigation bar. */
 nav ul {
   list-style-type: none;
   padding-left: 8px;
+}
+
+ul {
+  list-style-type: none;
 }
 
 /* Keep navigation menu on one line. */
