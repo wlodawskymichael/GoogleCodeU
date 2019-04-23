@@ -20,7 +20,7 @@ import com.google.codeu.data.Post;
 import com.google.codeu.data.Thread;
 import com.google.codeu.data.User;
 
-@WebServlet("/threads")
+@WebServlet("/forums")
 public class ThreadServlet extends HttpServlet {
 
     private Datastore datastore;
@@ -41,7 +41,7 @@ public class ThreadServlet extends HttpServlet {
         response.getOutputStream().println(json);
     }
 
-    @Override 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserService userService = UserServiceFactory.getUserService();
 
@@ -55,13 +55,13 @@ public class ThreadServlet extends HttpServlet {
         String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
         String topic = Jsoup.clean(request.getParameter("topic"), Whitelist.none());
         String title = Jsoup.clean(request.getParameter("title"), Whitelist.none());
-        
+
         Thread thread = new Thread(null, title, topic);
         Post firstPost = new Post(thread.getThreadId(), userEmail, text);
         thread.setFirstPostId(firstPost.getPostId());
 
         datastore.storeThread(thread);
         datastore.storePost(firstPost);
-        response.sendRedirect("/threads");
+        response.sendRedirect("/forums.html");
     }
 }

@@ -1,6 +1,6 @@
 /** Fetch threads and populate the forums */
 function fetchThreads () {
-  const url = '/threads'
+  const url = '/forums'
   fetch(url).then((res) => {
     return res.json()
   }).then((threads) => {
@@ -49,7 +49,25 @@ function buildThreadDiv (thread) {
   return threadDiv
 }
 
+/**
+ * Shows the message form if the user is logged in.
+ */
+function showThreadForm () {
+fetch('/login-status')
+    .then((response) => {
+      return response.json()
+    })
+    .then((loginStatus) => {
+      if (loginStatus.isLoggedIn) {
+        const threadForm = document.getElementById('thread-form')
+        threadForm.action = '/forums'
+        threadForm.classList.remove('hidden')
+      }
+    })
+}
+
 /** Fetch the threads and populate the UI with them */
 function buildUI () {
+  showThreadForm()
   fetchThreads()
 }
