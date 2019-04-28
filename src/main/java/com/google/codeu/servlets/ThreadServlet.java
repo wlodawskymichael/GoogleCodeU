@@ -3,6 +3,8 @@ package com.google.codeu.servlets;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,10 +35,13 @@ public class ThreadServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
+        System.out.println(request);
 
         List<Thread> allThreads = datastore.getThreads();
+
         Gson gson = new Gson();
         String json = gson.toJson(allThreads);
+        System.out.println(json);
 
         response.getOutputStream().println(json);
     }
