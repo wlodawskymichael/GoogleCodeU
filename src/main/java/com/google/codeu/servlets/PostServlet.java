@@ -34,16 +34,18 @@ public class PostServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
-        String threadId = Jsoup.clean(request.getParameter("threadId"), Whitelist.none());
+        // String threadId = Jsoup.clean(request.getParameter("threadId"), Whitelist.none());
 
-        List<Post> allPosts = datastore.getPostsFromThread(threadId);
+        // List<Post> allPosts = datastore.getPostsFromThread(UUID.fromString(threadId));
+        // List<Post> allPosts = datastore.getPostsFromThread(threadId);
+        List<Post> allPosts = datastore.getPosts();
         Gson gson = new Gson();
         String json = gson.toJson(allPosts);
 
         response.getOutputStream().println(json);
     }
 
-    @Override 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserService userService = UserServiceFactory.getUserService();
 
@@ -55,11 +57,11 @@ public class PostServlet extends HttpServlet {
 
         String userEmail = userService.getCurrentUser().getEmail();
         String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
-        String threadIdString = Jsoup.clean(request.getParameter("thread"), Whitelist.none());
+        String threadIdString = Jsoup.clean(request.getParameter("threadId"), Whitelist.none());
         UUID threadId = UUID.fromString(threadIdString);
-        
+
         Post post = new Post(threadId, userEmail, text);
         datastore.storePost(post);
-        response.sendRedirect("/posts");
+        response.sendRedirect("/forums.html");
     }
 }

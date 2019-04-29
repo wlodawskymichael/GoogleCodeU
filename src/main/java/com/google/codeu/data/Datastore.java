@@ -65,7 +65,7 @@ public class Datastore {
 
   /**
    * Gets all posts in a given thread
-   * 
+   *
    * @return a list of posts in a thread. List is sorted by time descending.
    */
   public List<Post> getPostsFromThread(String threadId) {
@@ -73,7 +73,37 @@ public class Datastore {
     Query query = new Query("Post")
                       .setFilter(new Query.FilterPredicate("threadId", FilterOperator.EQUAL, threadId))
                       .addSort("timestamp", SortDirection.DESCENDING);
-    
+
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String postIdString = entity.getKey().getName();
+        UUID postId = UUID.fromString(postIdString);
+        String threadIdString = (String) entity.getProperty("threadId");
+        UUID threadid = UUID.fromString(threadIdString);
+        String user = (String) entity.getProperty("user");
+        String text = (String) entity.getProperty("text");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Post post = new Post(postId, threadid, user, text, timestamp);
+        posts.add(post);
+      } catch (Exception e) {
+        System.err.println("Error reading post.");
+      }
+    }
+    return posts;
+  }
+
+  /**
+   * Gets all posts
+   *
+   * @return a list of posts. List is sorted by time ascending.
+   */
+  public List<Post> getPosts() {
+    List<Post> posts = new ArrayList<>();
+    Query query = new Query("Post")
+                      .addSort("timestamp", SortDirection.ASCENDING);
+
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       try {
@@ -140,7 +170,7 @@ public class Datastore {
 
   /**
    * Gets all posts from a given user
-   * 
+   *
    * @return a list of posts from a user. List is sorted by time descending.
    */
   public List<Post> getPostsFromUser(String user) {
@@ -148,7 +178,7 @@ public class Datastore {
     Query query = new Query("Post")
                       .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
                       .addSort("timestamp", SortDirection.DESCENDING);
-    
+
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       try {
